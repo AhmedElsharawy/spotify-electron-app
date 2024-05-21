@@ -1,38 +1,51 @@
-import React, { useEffect, useState } from 'react';
-import { setAccessToken, getUserPlaylists } from './spotify';
+import React, { useEffect, useState } from "react";
+import { setAccessToken, getUserPlaylists } from "./spotify";
 
 const CLIENT_ID = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
-const REDIRECT_URI = 'http://localhost:3000';
-const AUTH_ENDPOINT = 'https://accounts.spotify.com/authorize';
-const RESPONSE_TYPE = 'token';
+const REDIRECT_URI = "http://localhost:3000";
+const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
+const RESPONSE_TYPE = "token";
 
 function App() {
-  const [token, setToken] = useState('');
+  const [token, setToken] = useState("");
   const [playlists, setPlaylists] = useState([]);
 
   useEffect(() => {
     const hash = window.location.hash;
-    let token = window.localStorage.getItem('token');
+    let localToken = window.localStorage.getItem("token");
 
-    if (!token && hash) {
-      token = hash.substring(1).split('&').find(elem => elem.startsWith('access_token')).split('=')[1];
-      window.location.hash = '';
-      window.localStorage.setItem('token', token);
+    if (!localToken && hash) {
+      localToken = hash
+        .substring(1)
+        .split("&")
+        .find((elem) => elem.startsWith("access_token"))
+        .split("=")[1];
+
+      window.location.hash = "";
+      window.localStorage.setItem("token", localToken);
+      console.log("Token set from hash:", localToken);
     }
 
-    setToken(token);
-    setAccessToken(token);
+    setToken(localToken);
+    setAccessToken(localToken);
 
-    if (token) {
-      getUserPlaylists().then((response) => {
-        setPlaylists(response.items);
-      });
+    if (localToken) {
+      getUserPlaylists()
+        .then((response) => {
+          setPlaylists(response.items);
+        })
+        .catch((error) => {
+          console.error("Failed to fetch playlists:", error);
+        });
+    } else {
+      console.log("No token found. User needs to log in.");
     }
   }, []);
 
   const logout = () => {
-    setToken('');
-    window.localStorage.removeItem('token');
+    setToken("");
+    window.localStorage.removeItem("token");
+    console.log("User logged out.");
   };
 
   return (
