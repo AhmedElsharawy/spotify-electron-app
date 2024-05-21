@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { setAccessToken, getUserPlaylists } from './spotify';
 
-const CLIENT_ID = 'process.env.REACT_APP_SPOTIFY_CLIENT_ID';
+const CLIENT_ID = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
 const REDIRECT_URI = 'http://localhost:3000';
 const AUTH_ENDPOINT = 'https://accounts.spotify.com/authorize';
 const RESPONSE_TYPE = 'token';
@@ -66,4 +66,3 @@ function App() {
 }
 
 export default App;
-
