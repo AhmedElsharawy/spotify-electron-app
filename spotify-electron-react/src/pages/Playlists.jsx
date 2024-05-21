@@ -29,6 +29,8 @@ const Playlists = ({ playlists }) => {
     }
   };
 
+  console.log("songs", songs);
+
   return (
     <div>
       <h1>Playlists</h1>

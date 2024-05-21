@@ -3,13 +3,10 @@ const path = require("path");
 
 function createWindow() {
   const mainWindow = new BrowserWindow({
+    width: 800,
+    height: 600,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
-      contextIsolation: true,
-      enableRemoteModule: false,
-      // Add CSP here
-      webSecurity: true,
-      additionalArguments: [`--csp="default-src 'self'; script-src 'self'"`],
     },
   });
 
