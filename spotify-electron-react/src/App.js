@@ -1,80 +1,78 @@
 import React, { useEffect, useState } from "react";
 import { setAccessToken, getUserPlaylists } from "./spotify";
-
-const CLIENT_ID = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
-const REDIRECT_URI = "http://localhost:3000";
-const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
-const RESPONSE_TYPE = "token";
+import Home from "./pages/Home";
 
 function App() {
   const [token, setToken] = useState("");
   const [playlists, setPlaylists] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const hash = window.location.hash;
-    let localToken = window.localStorage.getItem("token");
+    // console.log("App useEffect running");
+    const { hash } = window.location;
+    let token = window.localStorage.getItem("token");
+    // console.log("Initial token from localStorage:", token);
 
-    if (!localToken && hash) {
-      localToken = hash
+    if (!token && hash) {
+      // console.log("Hash found in URL:", hash);
+      const tokenFromHash = hash
         .substring(1)
         .split("&")
-        .find((elem) => elem.startsWith("access_token"))
-        .split("=")[1];
+        .reduce((initial, item) => {
+          if (item) {
+            let parts = item.split("=");
+            initial[parts[0]] = decodeURIComponent(parts[1]);
+          }
+          return initial;
+        }, {}).access_token;
 
-      window.location.hash = "";
-      window.localStorage.setItem("token", localToken);
-      console.log("Token set from hash:", localToken);
+      // console.log("Parsed token from URL hash:", tokenFromHash);
+
+      if (tokenFromHash) {
+        window.localStorage.setItem("token", tokenFromHash);
+        window.location.hash = "";
+        token = tokenFromHash;
+        // console.log("Token stored in localStorage and hash cleared:", token);
+      }
     }
 
-    setToken(localToken);
-    setAccessToken(localToken);
-
-    if (localToken) {
-      getUserPlaylists()
-        .then((response) => {
-          setPlaylists(response.items);
-        })
-        .catch((error) => {
-          console.error("Failed to fetch playlists:", error);
-        });
+    if (token) {
+      setToken(token);
+      setAccessToken(token);
+      fetchPlaylists(token);
     } else {
-      console.log("No token found. User needs to log in.");
+      // console.log("No token found. User needs to log in.");
     }
   }, []);
 
+  const fetchPlaylists = (token) => {
+    console.log("Fetching playlists");
+    setLoading(true);
+    getUserPlaylists()
+      .then((response) => {
+        setPlaylists(response.items);
+        setLoading(false);
+        // console.log("Playlists fetched successfully:", response.items);
+      })
+      .catch((error) => {
+        // console.error("Failed to fetch playlists:", error);
+        setLoading(false);
+      });
+  };
+
   const logout = () => {
+    // console.log("Logging out");
     setToken("");
     window.localStorage.removeItem("token");
-    console.log("User logged out.");
   };
 
   return (
-    <div className="App">
-      <header className="App-header">
-        {!token ? (
-          <a
-            href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}
-          >
-            Login to Spotify
-          </a>
-        ) : (
-          <button onClick={logout}>Logout</button>
-        )}
-
-        {token ? (
-          <div>
-            <h1>Playlists</h1>
-            <ul>
-              {playlists.map((playlist) => (
-                <li key={playlist.id}>{playlist.name}</li>
-              ))}
-            </ul>
-          </div>
-        ) : (
-          <h2>Please login to Spotify</h2>
-        )}
-      </header>
-    </div>
+    <Home
+      token={token}
+      logout={logout}
+      playlists={playlists}
+      loading={loading}
+    />
   );
 }
 
