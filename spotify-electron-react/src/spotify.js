@@ -1,4 +1,4 @@
-import SpotifyWebApi from 'spotify-web-api-js';
+import SpotifyWebApi from "spotify-web-api-js";
 const spotifyApi = new SpotifyWebApi();
 
 const setAccessToken = (token) => {
@@ -9,5 +9,9 @@ const getUserPlaylists = () => {
   return spotifyApi.getUserPlaylists();
 };
 
-export { setAccessToken, getUserPlaylists };
+// Function to fetch songs from a specific playlist
+const getPlaylistSongs = (playlistId) => {
+  return spotifyApi.getPlaylistTracks(playlistId);
+};
 
+export { setAccessToken, getUserPlaylists, getPlaylistSongs };
