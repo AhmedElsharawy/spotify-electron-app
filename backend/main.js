@@ -1,13 +1,15 @@
+require("dotenv").config();
+
 const express = require("express");
 const axios = require("axios");
 const querystring = require("querystring");
 const app = express();
-const port = 8080;
+const port = 3000;
 
 // Spotify credentials
 const clientId = process.env.SPOTIFY_CLIENT_ID;
 const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
-const redirectUri = "http://localhost:3000/"; // Ensure this is registered in your Spotify app
+const redirectUri = "http://localhost:3000/callback"; // Ensure this is registered in your Spotify app
 
 // Step 2: Route to initiate the authorization process
 app.get("/login", (req, res) => {
