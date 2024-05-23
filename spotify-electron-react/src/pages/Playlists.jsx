@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { getPlaylistSongs } from "../spotify"; // Adjust this import path as needed
-import SpotifyPlayer from "../comps/SpotifyPlayer"; // Import the new Music Player component
+//import SpotifyPlayer from "../comps/SpotifyPlayer"; // Import the new Music Player component
 
 const Playlists = ({ playlists }) => {
   const [openPlaylistId, setOpenPlaylistId] = useState(null);
@@ -48,7 +48,7 @@ const Playlists = ({ playlists }) => {
                   {songs.map((song) => (
                     <li key={song.track.id}>
                       {song.track.name}
-                      <SpotifyPlayer track={song.track} />
+
                     </li>
                   ))}
                 </ul>
