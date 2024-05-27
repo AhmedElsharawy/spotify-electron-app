@@ -13,3 +13,7 @@ SPOTIFY_CLIENT_ID: *your ClientID here*
 SPOTIFY_CLIENT_SECRET: *your ClientSecret here*
 ```
 
+### Make sure you have Nodejs installed and **RUN** this command inside both your frontend and backend folders. `npm i`
+
+- Run the backend using `node index.js`
+- Run the frontend using `npm start`
