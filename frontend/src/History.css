@@ -1,0 +1,24 @@
+.history-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 20px;
+}
+
+.track {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.album-art {
+  width: 64px;
+  height: 64px;
+  margin-right: 10px;
+  border-radius: 4px;
+}
+
+.track-info {
+  display: flex;
+  flex-direction: column;
+}

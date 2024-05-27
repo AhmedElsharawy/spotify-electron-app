@@ -82,6 +82,7 @@ app.get("/recently-played", async (req, res) => {
       trackName: item.track.name,
       artistName: item.track.artists.map((artist) => artist.name).join(", "),
       playedAt: item.played_at,
+      albumArt: item.track.album.images[0]?.url,
     }));
 
     // Read current history
