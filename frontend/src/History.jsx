@@ -8,8 +8,8 @@ const History = () => {
   useEffect(() => {
     const fetchHistory = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/history');
-        setHistory(response.data.reverse());
+        const response = await axios.get('http://localhost:3000/recently-played');
+        setHistory(response.data);
       } catch (error) {
         console.error('Error fetching history:', error);
       }

@@ -49,13 +49,13 @@ const mergeHistory = (currentHistory, newTracks) => {
   );
 };
 
-// Step 1: Authorize user
+// Authorize user
 app.get("/login", (req, res) => {
   const scopes = ["user-read-recently-played"];
   res.redirect(spotifyApi.createAuthorizeURL(scopes));
 });
 
-// Step 2: Handle the callback after authorization
+// Handle the callback after authorization
 app.get("/callback", async (req, res) => {
   const code = req.query.code || null;
 
@@ -74,7 +74,7 @@ app.get("/callback", async (req, res) => {
   }
 });
 
-// Step 3: Get the user's recently played tracks and update the history file
+// Get the user's recently played tracks and update the history file
 app.get("/recently-played", async (req, res) => {
   try {
     const data = await spotifyApi.getMyRecentlyPlayedTracks({ limit: 20 });
@@ -105,6 +105,18 @@ app.get("/recently-played", async (req, res) => {
 app.get("/history", (req, res) => {
   const history = readHistoryFromFile();
   res.json(history);
+});
+
+// Endpoint to provide access token to frontend
+app.get("/token", async (req, res) => {
+  try {
+    const data = await spotifyApi.clientCredentialsGrant();
+    const accessToken = data.body["access_token"];
+    res.json({ access_token: accessToken });
+  } catch (err) {
+    console.error("Error getting access token:", err);
+    res.status(500).send("Error getting access token");
+  }
 });
 
 app.listen(port, () => {
