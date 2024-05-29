@@ -1,10 +1,12 @@
-// src/SpotifyPlayer.js
+// src/SpotifyPlayer.jsx
 import React, { useEffect, useState } from 'react';
 
 const SpotifyPlayer = ({ token }) => {
   const [player, setPlayer] = useState(null);
   const [deviceId, setDeviceId] = useState('');
   const [isScriptLoaded, setIsScriptLoaded] = useState(false);
+  const [currentTrack, setCurrentTrack] = useState(null);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
     const loadSpotifyScript = () => {
@@ -59,15 +61,23 @@ const SpotifyPlayer = ({ token }) => {
           console.error('Failed to perform playback', message);
         });
 
+        player.addListener('player_state_changed', state => {
+          if (state) {
+            const currentTrack = state.track_window.current_track;
+            setCurrentTrack(currentTrack);
+            setIsPlaying(!state.paused);
+          }
+        });
+
         player.connect().then(success => {
           if (success) {
             console.log('The Web Playback SDK successfully connected to Spotify!');
           }
         });
+
         setPlayer(player);
       }
     };
-
 
     const setupPlayer = async () => {
       try {
@@ -80,21 +90,12 @@ const SpotifyPlayer = ({ token }) => {
       }
     };
 
-
     setupPlayer();
   }, [token, isScriptLoaded]);
 
-  const play = ({
-    spotify_uri,
-    playerInstance: {
-      _options: {
-        getOAuthToken,
-        id
-      }
-    }
-  }) => {
-    getOAuthToken(access_token => {
-      fetch(`https://api.spotify.com/v1/me/player/play?device_id=${id}`, {
+  const playTrack = (spotify_uri) => {
+    player._options.getOAuthToken(access_token => {
+      fetch(`https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`, {
         method: 'PUT',
         body: JSON.stringify({ uris: [spotify_uri] }),
         headers: {
@@ -114,13 +115,41 @@ const SpotifyPlayer = ({ token }) => {
     });
   };
 
+  const togglePlay = () => {
+    player.togglePlay();
+  };
+
+  const nextTrack = () => {
+    player.nextTrack();
+  };
+
+  const previousTrack = () => {
+    player.previousTrack();
+  };
+
   return (
     <div>
-      <button onClick={() => play({
-        playerInstance: player,
-        spotify_uri: 'spotify:track:6rqhFgbbKwnb9MLmUQDhG6',
-      })}>
-        Play
+      <div>
+        {currentTrack ? (
+          <div>
+            <img src={currentTrack.album.images[0].url} alt={currentTrack.name} width={50} />
+            <div>{currentTrack.name} - {currentTrack.artists[0].name}</div>
+          </div>
+        ) : (
+          <div>No track currently playing</div>
+        )}
+      </div>
+      <button onClick={() => playTrack('spotify:track:6rqhFgbbKwnb9MLmUQDhG6')}>
+        Play Specific Track
+      </button>
+      <button onClick={togglePlay}>
+        {isPlaying ? 'Pause' : 'Play'}
+      </button>
+      <button onClick={previousTrack}>
+        Previous
+      </button>
+      <button onClick={nextTrack}>
+        Next
       </button>
     </div>
   );
