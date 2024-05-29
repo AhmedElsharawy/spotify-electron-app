@@ -50,8 +50,13 @@ const mergeHistory = (currentHistory, newTracks) => {
 };
 
 // Authorize user
-app.get("/login", (req, res) => {
-  const scopes = ["user-read-recently-played"];
+app.get("/", (req, res) => {
+  const scopes = [
+    "user-read-recently-played",
+    "streaming",
+    "user-modify-playback-state",
+    "user-read-playback-state",
+  ];
   res.redirect(spotifyApi.createAuthorizeURL(scopes));
 });
 
@@ -67,7 +72,8 @@ app.get("/callback", async (req, res) => {
     spotifyApi.setAccessToken(accessToken);
     spotifyApi.setRefreshToken(refreshToken);
 
-    res.redirect("/recently-played");
+    // Redirect to frontend with access token as query param
+    res.redirect(`http://localhost:3000?access_token=${accessToken}`);
   } catch (err) {
     console.error("Error getting tokens:", err);
     res.send("Error getting tokens.");
@@ -110,9 +116,12 @@ app.get("/history", (req, res) => {
 // Endpoint to provide access token to frontend
 app.get("/token", async (req, res) => {
   try {
-    const data = await spotifyApi.clientCredentialsGrant();
-    const accessToken = data.body["access_token"];
-    res.json({ access_token: accessToken });
+    const accessToken = spotifyApi.getAccessToken();
+    if (accessToken) {
+      res.json({ access_token: accessToken });
+    } else {
+      res.status(401).send("Access token not available");
+    }
   } catch (err) {
     console.error("Error getting access token:", err);
     res.status(500).send("Error getting access token");
