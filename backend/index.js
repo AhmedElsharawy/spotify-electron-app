@@ -51,6 +51,33 @@ const mergeHistory = (currentHistory, newTracks) => {
   );
 };
 
+// Helper function to extract top genres from listening history
+const extractTopGenres = (history) => {
+  const genreCounts = {};
+  history.forEach(track => {
+    track.genres.forEach(genre => {
+      genreCounts[genre] = (genreCounts[genre] || 0) + 1;
+    });
+  });
+  const sortedGenres = Object.keys(genreCounts).sort((a, b) => genreCounts[b] - genreCounts[a]);
+  return sortedGenres.slice(0, 5); // Get top 5 genres
+};
+
+// Helper function to get recommendations based on genres
+const getRecommendations = async (genres) => {
+  const genreString = genres.join(',');
+  const response = await axios.get('https://api.spotify.com/v1/recommendations', {
+    headers: {
+      'Authorization': 'Bearer ' + spotifyApi.getAccessToken()
+    },
+    params: {
+      seed_genres: genreString,
+      limit: 10
+    }
+  });
+  return response.data.tracks;
+};
+
 // Authorize user
 app.get("/", (req, res) => {
   const scopes = [
@@ -146,6 +173,26 @@ app.get("/recently-played", async (req, res) => {
 app.get("/history", (req, res) => {
   const history = readHistoryFromFile();
   res.json(history);
+});
+
+// Endpoint to get song recommendations based on listening history
+app.get("/recommendations", async (req, res) => {
+  try {
+    const history = readHistoryFromFile();
+    const topGenres = extractTopGenres(history);
+    const recommendations = await getRecommendations(topGenres);
+
+    const formattedRecommendations = recommendations.map(track => ({
+      trackName: track.name,
+      artistNames: track.artists.map(artist => artist.name).join(', '),
+      albumArt: track.album.images[0]?.url,
+    }));
+
+    res.json(formattedRecommendations);
+  } catch (err) {
+    console.error("Error getting recommendations:", err);
+    res.send("Error getting recommendations.");
+  }
 });
 
 // Endpoint to provide access token to frontend
