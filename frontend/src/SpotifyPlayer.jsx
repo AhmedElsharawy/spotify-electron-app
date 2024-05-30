@@ -7,6 +7,9 @@ const SpotifyPlayer = ({ token }) => {
   const [isScriptLoaded, setIsScriptLoaded] = useState(false);
   const [currentTrack, setCurrentTrack] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isReady, setIsReady] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [volume, setVolume] = useState(0.5);
 
   useEffect(() => {
     const loadSpotifyScript = () => {
@@ -39,10 +42,12 @@ const SpotifyPlayer = ({ token }) => {
         player.addListener('ready', ({ device_id }) => {
           console.log('Ready with Device ID', device_id);
           setDeviceId(device_id);
+          setIsReady(true);
         });
 
         player.addListener('not_ready', ({ device_id }) => {
           console.log('Device ID has gone offline', device_id);
+          setIsReady(false);
         });
 
         player.addListener('initialization_error', ({ message }) => {
@@ -66,6 +71,8 @@ const SpotifyPlayer = ({ token }) => {
             const currentTrack = state.track_window.current_track;
             setCurrentTrack(currentTrack);
             setIsPlaying(!state.paused);
+            setProgress(state.position);
+            console.log('Player state changed:', state);
           }
         });
 
@@ -94,29 +101,33 @@ const SpotifyPlayer = ({ token }) => {
   }, [token, isScriptLoaded]);
 
   const playTrack = (spotify_uri) => {
-    player._options.getOAuthToken(access_token => {
-      fetch(`https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`, {
-        method: 'PUT',
-        body: JSON.stringify({ uris: [spotify_uri] }),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${access_token}`
-        },
-      })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Failed to play track');
-          }
-          console.log('Track is playing');
+    if (player && isReady) {
+      player._options.getOAuthToken(access_token => {
+        fetch(`https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`, {
+          method: 'PUT',
+          body: JSON.stringify({ uris: [spotify_uri] }),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${access_token}`
+          },
         })
-        .catch(error => {
-          console.error('Error playing track:', error);
-        });
-    });
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Failed to play track');
+            }
+            console.log('Track is playing');
+          })
+          .catch(error => {
+            console.error('Error playing track:', error);
+          });
+      });
+    } else {
+      console.error('Player is not ready');
+    }
   };
 
   const togglePlay = () => {
-    if (player) {
+    if (player && isReady) {
       player.togglePlay().catch(error => {
         console.error('Error toggling play/pause:', error);
       });
@@ -126,7 +137,7 @@ const SpotifyPlayer = ({ token }) => {
   };
 
   const nextTrack = () => {
-    if (player) {
+    if (player && isReady) {
       player.nextTrack().catch(error => {
         console.error('Error skipping to next track:', error);
       });
@@ -136,13 +147,29 @@ const SpotifyPlayer = ({ token }) => {
   };
 
   const previousTrack = () => {
-    if (player) {
+    if (player && isReady) {
       player.previousTrack().catch(error => {
         console.error('Error skipping to previous track:', error);
       });
     } else {
       console.error('Player is not ready');
     }
+  };
+
+  const handleSeek = (event) => {
+    const seekPosition = event.target.value;
+    setProgress(seekPosition);
+    player.seek(seekPosition).catch(error => {
+      console.error('Error seeking track:', error);
+    });
+  };
+
+  const handleVolumeChange = (event) => {
+    const volumeLevel = event.target.value;
+    setVolume(volumeLevel);
+    player.setVolume(volumeLevel).catch(error => {
+      console.error('Error setting volume:', error);
+    });
   };
 
   return (
@@ -169,6 +196,25 @@ const SpotifyPlayer = ({ token }) => {
       <button onClick={nextTrack}>
         Next
       </button>
+      <div>
+        <input
+          type="range"
+          min="0"
+          max={currentTrack ? currentTrack.duration_ms : 100}
+          value={progress}
+          onChange={handleSeek}
+        />
+      </div>
+      <div>
+        <input
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          value={volume}
+          onChange={handleVolumeChange}
+        />
+      </div>
     </div>
   );
 };
