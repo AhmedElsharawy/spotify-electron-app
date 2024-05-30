@@ -1018,5 +1018,465 @@
     "artistName": "Metro Boomin, Don Toliver",
     "playedAt": "2024-05-30T00:12:38.401Z",
     "albumArt": "https://i.scdn.co/image/ab67616d0000b273c4fee55d7b51479627c31f89"
+  },
+  {
+    "trackName": "Runnin",
+    "artistNames": [
+      {
+        "name": "21 Savage",
+        "id": "1URnnhqYAYcrqrcwql10ft"
+      },
+      {
+        "name": "Metro Boomin",
+        "id": "0iEtIxbK0KxaSlF7G42ZOp"
+      }
+    ],
+    "playedAt": "2024-05-30T20:29:24.047Z",
+    "albumArt": "https://i.scdn.co/image/ab67616d0000b273aa57907bf0cb2ca0c8cc74bc",
+    "genres": [
+      "atl hip hop",
+      "hip hop",
+      "rap",
+      "rap"
+    ]
+  },
+  {
+    "trackName": "Money In The Grave (Drake ft. Rick Ross)",
+    "artistNames": [
+      {
+        "name": "Drake",
+        "id": "3TVXtAsR1Inumwj472S9r4"
+      },
+      {
+        "name": "Rick Ross",
+        "id": "1sBkRIssrMs1AbVkOJbc7a"
+      }
+    ],
+    "playedAt": "2024-05-30T20:32:49.504Z",
+    "albumArt": "https://i.scdn.co/image/ab67616d0000b2733f3b653b0a7b9e889a712c3d",
+    "genres": [
+      "canadian hip hop",
+      "canadian pop",
+      "hip hop",
+      "pop rap",
+      "rap",
+      "dirty south rap",
+      "gangster rap",
+      "hip hop",
+      "rap",
+      "southern hip hop",
+      "trap"
+    ]
+  },
+  {
+    "trackName": "Trance (with Travis Scott & Young Thug)",
+    "artistNames": [
+      {
+        "name": "Metro Boomin",
+        "id": "0iEtIxbK0KxaSlF7G42ZOp"
+      },
+      {
+        "name": "Travis Scott",
+        "id": "0Y5tJX1MQlPlqiwlOH1tJY"
+      },
+      {
+        "name": "Young Thug",
+        "id": "50co4Is1HCEo8bhOyUWKpn"
+      }
+    ],
+    "playedAt": "2024-05-30T20:46:01.517Z",
+    "albumArt": "https://i.scdn.co/image/ab67616d0000b273c4fee55d7b51479627c31f89",
+    "genres": [
+      "rap",
+      "rap",
+      "slap house",
+      "atl hip hop",
+      "atl trap",
+      "gangster rap",
+      "melodic rap",
+      "rap",
+      "trap"
+    ]
+  },
+  {
+    "trackName": "Rich Flex",
+    "artistNames": [
+      {
+        "name": "Drake",
+        "id": "3TVXtAsR1Inumwj472S9r4"
+      },
+      {
+        "name": "21 Savage",
+        "id": "1URnnhqYAYcrqrcwql10ft"
+      }
+    ],
+    "playedAt": "2024-05-30T20:50:00.490Z",
+    "albumArt": "https://i.scdn.co/image/ab67616d0000b27302854a7060fccc1a66a4b5ad",
+    "genres": [
+      "canadian hip hop",
+      "canadian pop",
+      "hip hop",
+      "pop rap",
+      "rap",
+      "atl hip hop",
+      "hip hop",
+      "rap"
+    ]
+  },
+  {
+    "trackName": "Family Matters",
+    "artistNames": [
+      {
+        "name": "Drake",
+        "id": "3TVXtAsR1Inumwj472S9r4"
+      }
+    ],
+    "playedAt": "2024-05-30T20:57:50.521Z",
+    "albumArt": "https://i.scdn.co/image/ab67616d0000b273a0ac23f4b446a7264e67bf0e",
+    "genres": [
+      "canadian hip hop",
+      "canadian pop",
+      "hip hop",
+      "pop rap",
+      "rap"
+    ]
+  },
+  {
+    "trackName": "GET OFF ME (with Travis Scott)",
+    "artistNames": [
+      {
+        "name": "Kid Cudi",
+        "id": "0fA0VVWsXO9YnASrzqfmYu"
+      },
+      {
+        "name": "Travis Scott",
+        "id": "0Y5tJX1MQlPlqiwlOH1tJY"
+      }
+    ],
+    "playedAt": "2024-05-30T21:01:26.318Z",
+    "albumArt": "https://i.scdn.co/image/ab67616d0000b273820f2a56e4a57cc9a94672a8",
+    "genres": [
+      "hip hop",
+      "ohio hip hop",
+      "pop rap",
+      "rap",
+      "rap",
+      "slap house"
+    ]
+  },
+  {
+    "trackName": "Distraction",
+    "artistNames": [
+      {
+        "name": "Polo G",
+        "id": "6AgTAQt8XS6jRWi4sX7w49"
+      }
+    ],
+    "playedAt": "2024-05-30T21:04:18.176Z",
+    "albumArt": "https://i.scdn.co/image/ab67616d0000b2731d78b2b8ab8d17f60a426b53",
+    "genres": [
+      "chicago rap",
+      "rap"
+    ]
+  },
+  {
+    "trackName": "rockstar (feat. 21 Savage)",
+    "artistNames": [
+      {
+        "name": "Post Malone",
+        "id": "246dkjvS1zLTtiykXe5h60"
+      },
+      {
+        "name": "21 Savage",
+        "id": "1URnnhqYAYcrqrcwql10ft"
+      }
+    ],
+    "playedAt": "2024-05-30T21:07:57.358Z",
+    "albumArt": "https://i.scdn.co/image/ab67616d0000b273b1c4b76e23414c9f20242268",
+    "genres": [
+      "dfw rap",
+      "melodic rap",
+      "pop",
+      "rap",
+      "atl hip hop",
+      "hip hop",
+      "rap"
+    ]
+  },
+  {
+    "trackName": "Private Landing (feat. Justin Bieber & Future)",
+    "artistNames": [
+      {
+        "name": "Don Toliver",
+        "id": "4Gso3d4CscCijv0lmajZWs"
+      },
+      {
+        "name": "Justin Bieber",
+        "id": "1uNFoZAHBGtllmzznpCI3s"
+      },
+      {
+        "name": "Future",
+        "id": "1RyvyyTE3xzB2ZywiAwp0i"
+      }
+    ],
+    "playedAt": "2024-05-30T21:10:45.337Z",
+    "albumArt": "https://i.scdn.co/image/ab67616d0000b273feeff698e6090e6b02f21ec0",
+    "genres": [
+      "pop rap",
+      "rap",
+      "trap",
+      "canadian pop",
+      "pop",
+      "atl hip hop",
+      "hip hop",
+      "rap",
+      "southern hip hop",
+      "trap"
+    ]
+  },
+  {
+    "trackName": "Private Landing (feat. Justin Bieber & Future)",
+    "artistNames": [
+      {
+        "name": "Don Toliver",
+        "id": "4Gso3d4CscCijv0lmajZWs"
+      },
+      {
+        "name": "Justin Bieber",
+        "id": "1uNFoZAHBGtllmzznpCI3s"
+      },
+      {
+        "name": "Future",
+        "id": "1RyvyyTE3xzB2ZywiAwp0i"
+      }
+    ],
+    "playedAt": "2024-05-30T21:11:08.465Z",
+    "albumArt": "https://i.scdn.co/image/ab67616d0000b273feeff698e6090e6b02f21ec0",
+    "genres": [
+      "pop rap",
+      "rap",
+      "trap",
+      "canadian pop",
+      "pop",
+      "atl hip hop",
+      "hip hop",
+      "rap",
+      "southern hip hop",
+      "trap"
+    ]
+  },
+  {
+    "trackName": "Not Like Us",
+    "artistNames": [
+      {
+        "name": "Kendrick Lamar",
+        "id": "2YZyLoL8N0Wb9xBt1NhZWg"
+      }
+    ],
+    "playedAt": "2024-05-30T21:16:01.729Z",
+    "albumArt": "https://i.scdn.co/image/ab67616d0000b2731ea0c62b2339cbf493a999ad",
+    "genres": [
+      "conscious hip hop",
+      "hip hop",
+      "rap",
+      "west coast rap"
+    ]
+  },
+  {
+    "trackName": "BOP",
+    "artistNames": [
+      {
+        "name": "DaBaby",
+        "id": "4r63FhuTkUYltbVAg5TQnk"
+      }
+    ],
+    "playedAt": "2024-05-30T21:18:41.547Z",
+    "albumArt": "https://i.scdn.co/image/ab67616d0000b273f2b94b2fda4f08836d6371ba",
+    "genres": [
+      "hip hop",
+      "north carolina hip hop",
+      "pop rap",
+      "rap",
+      "trap"
+    ]
+  },
+  {
+    "trackName": "MELTDOWN (feat. Drake)",
+    "artistNames": [
+      {
+        "name": "Travis Scott",
+        "id": "0Y5tJX1MQlPlqiwlOH1tJY"
+      },
+      {
+        "name": "Drake",
+        "id": "3TVXtAsR1Inumwj472S9r4"
+      }
+    ],
+    "playedAt": "2024-05-30T21:22:56.664Z",
+    "albumArt": "https://i.scdn.co/image/ab67616d0000b273881d8d8378cd01099babcd44",
+    "genres": [
+      "rap",
+      "slap house",
+      "canadian hip hop",
+      "canadian pop",
+      "hip hop",
+      "pop rap",
+      "rap"
+    ]
+  },
+  {
+    "trackName": "Wet Dreamz",
+    "artistNames": [
+      {
+        "name": "J. Cole",
+        "id": "6l3HvQ5sa6mXTsMTB19rO5"
+      }
+    ],
+    "playedAt": "2024-05-30T21:25:33.600Z",
+    "albumArt": "https://i.scdn.co/image/ab67616d0000b273c6e0948bbb0681ff29cdbae8",
+    "genres": [
+      "conscious hip hop",
+      "hip hop",
+      "north carolina hip hop",
+      "rap"
+    ]
+  },
+  {
+    "trackName": "First Person Shooter (feat. J. Cole)",
+    "artistNames": [
+      {
+        "name": "Drake",
+        "id": "3TVXtAsR1Inumwj472S9r4"
+      },
+      {
+        "name": "J. Cole",
+        "id": "6l3HvQ5sa6mXTsMTB19rO5"
+      }
+    ],
+    "playedAt": "2024-05-30T21:26:26.382Z",
+    "albumArt": "https://i.scdn.co/image/ab67616d0000b273e286ee36b4015afa8832356a",
+    "genres": [
+      "canadian hip hop",
+      "canadian pop",
+      "hip hop",
+      "pop rap",
+      "rap",
+      "conscious hip hop",
+      "hip hop",
+      "north carolina hip hop",
+      "rap"
+    ]
+  },
+  {
+    "trackName": "DOLLAZ ON MY HEAD (feat. Young Thug)",
+    "artistNames": [
+      {
+        "name": "Gunna",
+        "id": "2hlmm7s2ICUX0LVIhVFlZQ"
+      },
+      {
+        "name": "Young Thug",
+        "id": "50co4Is1HCEo8bhOyUWKpn"
+      }
+    ],
+    "playedAt": "2024-05-30T21:30:01.919Z",
+    "albumArt": "https://i.scdn.co/image/ab67616d0000b273d7547a7624116ac5f8a51fd2",
+    "genres": [
+      "atl hip hop",
+      "melodic rap",
+      "rap",
+      "trap",
+      "atl hip hop",
+      "atl trap",
+      "gangster rap",
+      "melodic rap",
+      "rap",
+      "trap"
+    ]
+  },
+  {
+    "trackName": "Superhero (Heroes & Villains) [with Future & Chris Brown]",
+    "artistNames": [
+      {
+        "name": "Metro Boomin",
+        "id": "0iEtIxbK0KxaSlF7G42ZOp"
+      },
+      {
+        "name": "Future",
+        "id": "1RyvyyTE3xzB2ZywiAwp0i"
+      },
+      {
+        "name": "Chris Brown",
+        "id": "7bXgB6jMjp9ATFy66eO08Z"
+      }
+    ],
+    "playedAt": "2024-05-30T21:33:04.677Z",
+    "albumArt": "https://i.scdn.co/image/ab67616d0000b273c4fee55d7b51479627c31f89",
+    "genres": [
+      "rap",
+      "atl hip hop",
+      "hip hop",
+      "rap",
+      "southern hip hop",
+      "trap",
+      "r&b",
+      "rap"
+    ]
+  },
+  {
+    "trackName": "We Don't Trust You",
+    "artistNames": [
+      {
+        "name": "Future",
+        "id": "1RyvyyTE3xzB2ZywiAwp0i"
+      },
+      {
+        "name": "Metro Boomin",
+        "id": "0iEtIxbK0KxaSlF7G42ZOp"
+      }
+    ],
+    "playedAt": "2024-05-30T21:41:12.442Z",
+    "albumArt": "https://i.scdn.co/image/ab67616d0000b273a46b07c291e6dfdee13b3ee8",
+    "genres": [
+      "atl hip hop",
+      "hip hop",
+      "rap",
+      "southern hip hop",
+      "trap",
+      "rap"
+    ]
+  },
+  {
+    "trackName": "MIDDLE CHILD",
+    "artistNames": [
+      {
+        "name": "J. Cole",
+        "id": "6l3HvQ5sa6mXTsMTB19rO5"
+      }
+    ],
+    "playedAt": "2024-05-30T21:44:46.099Z",
+    "albumArt": "https://i.scdn.co/image/ab67616d0000b2737f37a4001ae7d8be430bd91b",
+    "genres": [
+      "conscious hip hop",
+      "hip hop",
+      "north carolina hip hop",
+      "rap"
+    ]
+  },
+  {
+    "trackName": "All Girls Are The Same",
+    "artistNames": [
+      {
+        "name": "Juice WRLD",
+        "id": "4MCBfE4596Uoi2O4DtmEMz"
+      }
+    ],
+    "playedAt": "2024-05-30T21:46:15.208Z",
+    "albumArt": "https://i.scdn.co/image/ab67616d0000b273f7db43292a6a99b21b51d5b4",
+    "genres": [
+      "chicago rap",
+      "melodic rap",
+      "rap"
+    ]
   }
 ]

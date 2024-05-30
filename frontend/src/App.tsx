@@ -1,16 +1,20 @@
-// src/App.js
+// src/App.tsx
 import React, { useEffect, useState } from "react";
 import "./App.css";
 import History from "./History";
 import SpotifyPlayer from "./SpotifyPlayer";
 
-function App() {
-  const [token, setToken] = useState("");
+const App: React.FC = () => {
+  const [token, setToken] = useState<string>("");
 
   useEffect(() => {
-    // Fetch token from backend
     fetch("http://localhost:3000/token")
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
       .then((data) => setToken(data.access_token))
       .catch((error) => console.error("Error fetching token:", error));
   }, []);

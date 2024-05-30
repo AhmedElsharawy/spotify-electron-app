@@ -1,20 +1,31 @@
+// src/History.tsx
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './History.css'; // Create this CSS file for styling
+// import './History.css';
 
-const History = () => {
-  const [history, setHistory] = useState([]);
+interface Track {
+  albumArt: string;
+  trackName: string;
+  artistName: string;
+  playedAt: string;
+}
+
+const History: React.FC = () => {
+  const [history, setHistory] = useState<Track[]>([]);
 
   useEffect(() => {
     const fetchHistory = async () => {
       try {
         const response = await axios.get('http://localhost:3000/history');
+        if (!response.data) {
+          throw new Error('No data received');
+        }
         setHistory(response.data.reverse());
       } catch (error) {
         console.error('Error fetching history:', error);
       }
     };
-
+  
     fetchHistory();
   }, []);
 
