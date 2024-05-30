@@ -75,7 +75,7 @@ app.get("/callback", async (req, res) => {
     spotifyApi.setAccessToken(accessToken);
     spotifyApi.setRefreshToken(refreshToken);
 
-    res.redirect(`http://localhost:3001`);
+    res.redirect(`http://localhost:5173`);
   } catch (err) {
     console.error("Error getting tokens:", err);
     res.send("Error getting tokens.");

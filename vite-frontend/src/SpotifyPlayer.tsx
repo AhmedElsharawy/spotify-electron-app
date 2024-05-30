@@ -1,19 +1,30 @@
-// src/SpotifyPlayer.jsx
+// src/SpotifyPlayer.tsx
 import React, { useEffect, useState } from 'react';
 
-const SpotifyPlayer = ({ token, setToken }) => {
-  const [player, setPlayer] = useState(null);
-  const [deviceId, setDeviceId] = useState('');
-  const [isScriptLoaded, setIsScriptLoaded] = useState(false);
-  const [currentTrack, setCurrentTrack] = useState(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isReady, setIsReady] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [volume, setVolume] = useState(0.5);
+interface SpotifyPlayerProps {
+  token: string;
+  setToken: (token: string) => void;
+}
+
+interface SpotifyTrack {
+  album: { images: { url: string }[] };
+  name: string;
+  artists: { name: string }[];
+}
+
+const SpotifyPlayer: React.FC<SpotifyPlayerProps> = ({ token, setToken }) => {
+  const [player, setPlayer] = useState<Spotify.Player | null>(null);
+  const [deviceId, setDeviceId] = useState<string>('');
+  const [isScriptLoaded, setIsScriptLoaded] = useState<boolean>(false);
+  const [currentTrack, setCurrentTrack] = useState<SpotifyTrack | null>(null);
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [isReady, setIsReady] = useState<boolean>(false);
+  const [progress, setProgress] = useState<number>(0);
+  const [volume, setVolume] = useState<number>(0.5);
 
   useEffect(() => {
     const loadSpotifyScript = () => {
-      return new Promise((resolve, reject) => {
+      return new Promise<void>((resolve, reject) => {
         if (document.getElementById('spotify-player-script')) {
           resolve();
         } else {
@@ -107,7 +118,7 @@ const SpotifyPlayer = ({ token, setToken }) => {
     }
   };
 
-  const playTrack = (spotify_uri) => {
+  const playTrack = (spotify_uri: string) => {
     if (player && isReady) {
       player._options.getOAuthToken(access_token => {
         fetch(`https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`, {
@@ -162,18 +173,18 @@ const SpotifyPlayer = ({ token, setToken }) => {
     }
   };
 
-  const handleSeek = (event) => {
-    const seekPosition = event.target.value;
+  const handleSeek = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const seekPosition = Number(event.target.value);
     setProgress(seekPosition);
-    player.seek(seekPosition).catch(error => {
+    player!.seek(seekPosition).catch(error => {
       console.error('Error seeking track:', error);
     });
   };
 
-  const handleVolumeChange = (event) => {
-    const volumeLevel = event.target.value;
+  const handleVolumeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const volumeLevel = Number(event.target.value);
     setVolume(volumeLevel);
-    player.setVolume(volumeLevel).catch(error => {
+    player!.setVolume(volumeLevel).catch(error => {
       console.error('Error setting volume:', error);
     });
   };
