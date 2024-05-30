@@ -116,15 +116,33 @@ const SpotifyPlayer = ({ token }) => {
   };
 
   const togglePlay = () => {
-    player.togglePlay();
+    if (player) {
+      player.togglePlay().catch(error => {
+        console.error('Error toggling play/pause:', error);
+      });
+    } else {
+      console.error('Player is not ready');
+    }
   };
 
   const nextTrack = () => {
-    player.nextTrack();
+    if (player) {
+      player.nextTrack().catch(error => {
+        console.error('Error skipping to next track:', error);
+      });
+    } else {
+      console.error('Player is not ready');
+    }
   };
 
   const previousTrack = () => {
-    player.previousTrack();
+    if (player) {
+      player.previousTrack().catch(error => {
+        console.error('Error skipping to previous track:', error);
+      });
+    } else {
+      console.error('Player is not ready');
+    }
   };
 
   return (
