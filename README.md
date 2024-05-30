@@ -1,5 +1,5 @@
 # Spotify alternative player + extra features.
-## .env file is required for almost everything we're using here. 
+## .env file is required for almost everything we're using here.
 
 - Git clone into your directory
 ```
@@ -16,4 +16,4 @@ SPOTIFY_CLIENT_SECRET: *your ClientSecret here*
 ### Make sure you have Nodejs installed and **RUN** this command inside both your frontend and backend folders. `npm i`
 
 - Run the backend using `node index.js`
-- Run the frontend using `npm start`
+- Run the frontend using `npm run dev` *vite only*

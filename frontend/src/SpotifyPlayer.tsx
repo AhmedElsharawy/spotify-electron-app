@@ -10,6 +10,7 @@ interface SpotifyTrack {
   album: { images: { url: string }[] };
   name: string;
   artists: { name: string }[];
+  duration_ms: number;
 }
 
 const SpotifyPlayer: React.FC<SpotifyPlayerProps> = ({ token, setToken }) => {
@@ -176,17 +177,25 @@ const SpotifyPlayer: React.FC<SpotifyPlayerProps> = ({ token, setToken }) => {
   const handleSeek = (event: React.ChangeEvent<HTMLInputElement>) => {
     const seekPosition = Number(event.target.value);
     setProgress(seekPosition);
-    player!.seek(seekPosition).catch(error => {
-      console.error('Error seeking track:', error);
-    });
+    if (player && isReady) {
+      player.seek(seekPosition).catch(error => {
+        console.error('Error seeking track:', error);
+      });
+    } else {
+      console.error('Player is not ready');
+    }
   };
 
   const handleVolumeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const volumeLevel = Number(event.target.value);
     setVolume(volumeLevel);
-    player!.setVolume(volumeLevel).catch(error => {
-      console.error('Error setting volume:', error);
-    });
+    if (player && isReady) {
+      player.setVolume(volumeLevel).catch(error => {
+        console.error('Error setting volume:', error);
+      });
+    } else {
+      console.error('Player is not ready');
+    }
   };
 
   return (

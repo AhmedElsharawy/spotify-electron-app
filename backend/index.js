@@ -93,22 +93,49 @@ const refreshAccessToken = async () => {
   }
 };
 
+// Helper function to fetch artist genres
+const fetchArtistGenres = async (artistIds) => {
+  const artistData = await spotifyApi.getArtists(artistIds);
+  const artistGenres = {};
+  artistData.body.artists.forEach((artist) => {
+    artistGenres[artist.id] = artist.genres;
+  });
+  return artistGenres;
+};
+
 // Get the user's recently played tracks and update the history file
 app.get("/recently-played", async (req, res) => {
   try {
-    const data = await spotifyApi.getMyRecentlyPlayedTracks({ limit: 20 });
+    const data = await spotifyApi.getMyRecentlyPlayedTracks({ limit: 30 });
     const newTracks = data.body.items.map((item) => ({
       trackName: item.track.name,
-      artistName: item.track.artists.map((artist) => artist.name).join(", "),
+      artistNames: item.track.artists.map((artist) => ({
+        name: artist.name,
+        id: artist.id,
+      })),
       playedAt: item.played_at,
       albumArt: item.track.album.images[0]?.url,
     }));
 
+    // Fetch genres for all artists
+    const artistIds = newTracks.flatMap((track) =>
+      track.artistNames.map((artist) => artist.id)
+    );
+    const artistGenres = await fetchArtistGenres(artistIds);
+
+    // Add genres to new tracks
+    const tracksWithGenres = newTracks.map((track) => ({
+      ...track,
+      genres: track.artistNames.flatMap(
+        (artist) => artistGenres[artist.id] || []
+      ),
+    }));
+
     const currentHistory = readHistoryFromFile();
-    const updatedHistory = mergeHistory(currentHistory, newTracks);
+    const updatedHistory = mergeHistory(currentHistory, tracksWithGenres);
     writeHistoryToFile(updatedHistory);
 
-    res.json(newTracks);
+    res.json(tracksWithGenres);
   } catch (err) {
     console.error("Error getting recently played tracks:", err);
     res.send("Error getting recently played tracks.");
