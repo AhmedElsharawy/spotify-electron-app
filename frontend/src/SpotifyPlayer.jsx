@@ -1,7 +1,7 @@
 // src/SpotifyPlayer.jsx
 import React, { useEffect, useState } from 'react';
 
-const SpotifyPlayer = ({ token }) => {
+const SpotifyPlayer = ({ token, setToken }) => {
   const [player, setPlayer] = useState(null);
   const [deviceId, setDeviceId] = useState('');
   const [isScriptLoaded, setIsScriptLoaded] = useState(false);
@@ -37,16 +37,13 @@ const SpotifyPlayer = ({ token }) => {
           name: 'Web Playback SDK',
           getOAuthToken: cb => { cb(token); },
         });
-        console.log(`${token}`);
 
         player.addListener('ready', ({ device_id }) => {
-          console.log('Ready with Device ID', device_id);
           setDeviceId(device_id);
           setIsReady(true);
         });
 
         player.addListener('not_ready', ({ device_id }) => {
-          console.log('Device ID has gone offline', device_id);
           setIsReady(false);
         });
 
@@ -54,8 +51,9 @@ const SpotifyPlayer = ({ token }) => {
           console.error('Failed to initialize', message);
         });
 
-        player.addListener('authentication_error', ({ message }) => {
+        player.addListener('authentication_error', async ({ message }) => {
           console.error('Failed to authenticate', message);
+          await fetchNewToken();
         });
 
         player.addListener('account_error', ({ message }) => {
@@ -72,7 +70,6 @@ const SpotifyPlayer = ({ token }) => {
             setCurrentTrack(currentTrack);
             setIsPlaying(!state.paused);
             setProgress(state.position);
-            console.log('Player state changed:', state);
           }
         });
 
@@ -100,6 +97,16 @@ const SpotifyPlayer = ({ token }) => {
     setupPlayer();
   }, [token, isScriptLoaded]);
 
+  const fetchNewToken = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/token');
+      const data = await response.json();
+      setToken(data.access_token);
+    } catch (error) {
+      console.error('Failed to fetch new token', error);
+    }
+  };
+
   const playTrack = (spotify_uri) => {
     if (player && isReady) {
       player._options.getOAuthToken(access_token => {
@@ -115,7 +122,6 @@ const SpotifyPlayer = ({ token }) => {
             if (!response.ok) {
               throw new Error('Failed to play track');
             }
-            console.log('Track is playing');
           })
           .catch(error => {
             console.error('Error playing track:', error);

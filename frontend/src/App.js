@@ -19,6 +19,9 @@ function App() {
     <div className="App">
       <header className="App-header">
         <h1>Spotify Listening History</h1>
+        <a href="http://localhost:3000">
+          <h2>Login</h2>
+        </a>
       </header>
       <History />
       {token && <SpotifyPlayer token={token} />}

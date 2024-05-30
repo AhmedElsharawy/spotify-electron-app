@@ -10,7 +10,6 @@ const cors = require("cors");
 const app = express();
 const port = 3000;
 
-// Replace these values with your Spotify app credentials
 const clientId = process.env.SPOTIFY_CLIENT_ID;
 const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
 const redirectUri = "http://localhost:3000/callback";
@@ -22,6 +21,9 @@ const spotifyApi = new SpotifyWebApi({
 });
 
 app.use(cors());
+
+let accessToken = "";
+let refreshToken = "";
 
 // Helper function to read history from file
 const readHistoryFromFile = () => {
@@ -56,6 +58,7 @@ app.get("/", (req, res) => {
     "streaming",
     "user-modify-playback-state",
     "user-read-playback-state",
+    "app-remote-control",
   ];
   res.redirect(spotifyApi.createAuthorizeURL(scopes));
 });
@@ -66,19 +69,29 @@ app.get("/callback", async (req, res) => {
 
   try {
     const data = await spotifyApi.authorizationCodeGrant(code);
-    const accessToken = data.body["access_token"];
-    const refreshToken = data.body["refresh_token"];
+    accessToken = data.body["access_token"];
+    refreshToken = data.body["refresh_token"];
 
     spotifyApi.setAccessToken(accessToken);
     spotifyApi.setRefreshToken(refreshToken);
 
-    // Redirect to frontend with access token as query param
-    res.redirect(`http://localhost:3000?access_token=${accessToken}`);
+    res.redirect(`http://localhost:3001`);
   } catch (err) {
     console.error("Error getting tokens:", err);
     res.send("Error getting tokens.");
   }
 });
+
+// Refresh access token when needed
+const refreshAccessToken = async () => {
+  try {
+    const data = await spotifyApi.refreshAccessToken();
+    accessToken = data.body["access_token"];
+    spotifyApi.setAccessToken(accessToken);
+  } catch (error) {
+    console.error("Could not refresh access token", error);
+  }
+};
 
 // Get the user's recently played tracks and update the history file
 app.get("/recently-played", async (req, res) => {
@@ -91,13 +104,8 @@ app.get("/recently-played", async (req, res) => {
       albumArt: item.track.album.images[0]?.url,
     }));
 
-    // Read current history
     const currentHistory = readHistoryFromFile();
-
-    // Merge current history with new tracks
     const updatedHistory = mergeHistory(currentHistory, newTracks);
-
-    // Save updated history to file
     writeHistoryToFile(updatedHistory);
 
     res.json(newTracks);
