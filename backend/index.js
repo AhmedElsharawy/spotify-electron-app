@@ -81,11 +81,11 @@ const getRecommendations = async (genres) => {
 // Authorize user
 app.get("/", (req, res) => {
   const scopes = [
-    "user-read-recently-played",
-    "streaming",
-    "user-modify-playback-state",
-    "user-read-playback-state",
-    "app-remote-control",
+    'user-modify-playback-state',
+    'user-read-playback-state',
+    'streaming',
+    'playlist-read-private',
+    'playlist-read-collaborative'
   ];
   res.redirect(spotifyApi.createAuthorizeURL(scopes));
 });

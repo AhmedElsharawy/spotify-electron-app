@@ -1,5 +1,6 @@
 // src/SpotifyPlayer.tsx
 import React, { useEffect, useState } from 'react';
+import SpotifyScript from './SpotifyScript';
 
 interface SpotifyPlayerProps {
   token: string;
@@ -24,39 +25,23 @@ const SpotifyPlayer: React.FC<SpotifyPlayerProps> = ({ token, setToken }) => {
   const [volume, setVolume] = useState<number>(0.5);
 
   useEffect(() => {
-    const loadSpotifyScript = () => {
-      return new Promise<void>((resolve, reject) => {
-        if (document.getElementById('spotify-player-script')) {
-          resolve();
-        } else {
-          const script = document.createElement('script');
-          script.id = 'spotify-player-script';
-          script.src = 'https://sdk.scdn.co/spotify-player.js';
-          script.async = true;
-          script.onload = () => {
-            setIsScriptLoaded(true);
-            resolve();
-          };
-          script.onerror = reject;
-          document.body.appendChild(script);
-        }
-      });
-    };
-
     const initializePlayer = () => {
       if (window.Spotify) {
         const player = new window.Spotify.Player({
           name: 'Web Playback SDK',
           getOAuthToken: cb => { cb(token); },
+          volume: 0.5
         });
 
         player.addListener('ready', ({ device_id }) => {
           setDeviceId(device_id);
           setIsReady(true);
+          console.log('Player is ready');
         });
 
         player.addListener('not_ready', ({ device_id }) => {
           setIsReady(false);
+          console.log('Player is not ready');
         });
 
         player.addListener('initialization_error', ({ message }) => {
@@ -95,19 +80,16 @@ const SpotifyPlayer: React.FC<SpotifyPlayerProps> = ({ token, setToken }) => {
       }
     };
 
-    const setupPlayer = async () => {
-      try {
-        if (!isScriptLoaded) {
-          await loadSpotifyScript();
-        }
-        initializePlayer();
-      } catch (error) {
-        console.error('Failed to load Spotify SDK', error);
-      }
-    };
-
-    setupPlayer();
+    if (isScriptLoaded) {
+      initializePlayer();
+    }
   }, [token, isScriptLoaded]);
+
+  useEffect(() => {
+    (window as any).onSpotifyWebPlaybackSDKReady = () => {
+      setIsScriptLoaded(true);
+    };
+  }, []);
 
   const fetchNewToken = async () => {
     try {
@@ -119,12 +101,12 @@ const SpotifyPlayer: React.FC<SpotifyPlayerProps> = ({ token, setToken }) => {
     }
   };
 
-  const playTrack = (spotify_uri: string) => {
+  const playPlaylist = (spotify_uri: string) => {
     if (player && isReady) {
       player._options.getOAuthToken(access_token => {
         fetch(`https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`, {
           method: 'PUT',
-          body: JSON.stringify({ uris: [spotify_uri] }),
+          body: JSON.stringify({ context_uri: spotify_uri }),
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${access_token}`
@@ -132,11 +114,11 @@ const SpotifyPlayer: React.FC<SpotifyPlayerProps> = ({ token, setToken }) => {
         })
           .then(response => {
             if (!response.ok) {
-              throw new Error('Failed to play track');
+              throw new Error(`Failed to play playlist: ${response.statusText}`);
             }
           })
           .catch(error => {
-            console.error('Error playing track:', error);
+            console.error('Error playing playlist:', error);
           });
       });
     } else {
@@ -199,39 +181,48 @@ const SpotifyPlayer: React.FC<SpotifyPlayerProps> = ({ token, setToken }) => {
   };
 
   return (
-    <div>
-      <div>
+    <div className="p-4 bg-gray-800 text-white rounded-lg shadow-md">
+      <SpotifyScript onScriptLoad={() => setIsScriptLoaded(true)} />
+      <div className="flex items-center space-x-4">
         {currentTrack ? (
-          <div>
-            <img src={currentTrack.album.images[0].url} alt={currentTrack.name} width={50} />
-            <div>{currentTrack.name} - {currentTrack.artists[0].name}</div>
+          <div className="flex items-center space-x-4">
+            <img src={currentTrack.album.images[0].url} alt={currentTrack.name} className="w-16 h-16 rounded" />
+            <div>
+              <div className="text-lg font-bold">{currentTrack.name}</div>
+              <div className="text-sm text-gray-400">{currentTrack.artists[0].name}</div>
+            </div>
           </div>
         ) : (
-          <div>No track currently playing</div>
+          <div className="text-gray-400">No track currently playing</div>
         )}
       </div>
-      <button onClick={() => playTrack('spotify:track:6rqhFgbbKwnb9MLmUQDhG6')}>
-        Play Specific Track
-      </button>
-      <button onClick={togglePlay}>
-        {isPlaying ? 'Pause' : 'Play'}
-      </button>
-      <button onClick={previousTrack}>
-        Previous
-      </button>
-      <button onClick={nextTrack}>
-        Next
-      </button>
-      <div>
+      <div className="mt-4">
+        <button className="px-4 py-2 bg-green-600 hover:bg-green-700 rounded" onClick={() => playPlaylist('spotify:playlist:37i9dQZF1E4vhT0vGERtJH')}>
+          Play Alias Radio Playlist
+        </button>
+      </div>
+      <div className="mt-4 flex space-x-4">
+        <button className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded" onClick={togglePlay}>
+          {isPlaying ? 'Pause' : 'Play'}
+        </button>
+        <button className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded" onClick={previousTrack}>
+          Previous
+        </button>
+        <button className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded" onClick={nextTrack}>
+          Next
+        </button>
+      </div>
+      <div className="mt-4">
         <input
           type="range"
           min="0"
           max={currentTrack ? currentTrack.duration_ms : 100}
           value={progress}
           onChange={handleSeek}
+          className="w-full"
         />
       </div>
-      <div>
+      <div className="mt-4">
         <input
           type="range"
           min="0"
@@ -239,6 +230,7 @@ const SpotifyPlayer: React.FC<SpotifyPlayerProps> = ({ token, setToken }) => {
           step="0.01"
           value={volume}
           onChange={handleVolumeChange}
+          className="w-full"
         />
       </div>
     </div>
