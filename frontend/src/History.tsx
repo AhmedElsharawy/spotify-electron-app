@@ -1,7 +1,6 @@
 // src/History.tsx
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-// import './History.css';
 
 interface Track {
   albumArt: string;
@@ -30,14 +29,16 @@ const History: React.FC = () => {
   }, []);
 
   return (
-    <div>
-      <h1>Listening History</h1>
-      <div className="history-container">
+    <div className="p-4">
+      <h1 className="text-2xl font-bold mb-4">Listening History</h1>
+      <div className="space-y-4">
         {history.map((track, index) => (
-          <div key={index} className="track">
-            <img src={track.albumArt} alt={track.trackName} className="album-art" />
-            <div className="track-info">
-              <strong>{track.trackName}</strong> by {track.artistName} on {new Date(track.playedAt).toLocaleString()}
+          <div key={index} className="flex items-center bg-gray-800 p-4 rounded-lg shadow-md">
+            <img src={track.albumArt} alt={track.trackName} className="w-20 h-20 rounded-lg" />
+            <div className="ml-4">
+              <div className="text-xl font-bold">{track.trackName}</div>
+              <div className="text-gray-400">{track.artistName}</div>
+              <div className="text-gray-500 text-sm">{new Date(track.playedAt).toLocaleString()}</div>
             </div>
           </div>
         ))}
